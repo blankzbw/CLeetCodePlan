@@ -518,5 +518,69 @@ END
 
 ```
 
+# 07 How the C++ Linker Works
 
+链接：主要就是找到每个符号和函数的位置，并将它们链接到一起；
+
+编译错误以C的开头
+
+error C2143: 语法错误: 缺少“;”
+
+链接错误以L开头：
+
+ error LNK2019: 无法解析的外部符号 _main，函数 "
+
+当编译.exe必须指定一个入口函数，但这个函数不一定时mian，可以自定义入口点；
+
+项目右击属性：选择Linker、高级、入口点处设置；（未尝试）
+
+Linker常见报错：
+
+unresolved external symbol ：使用一个未在本文件实现的函数，并且进行了声明时，但是在链接过程中，并没有找到这个函数的实现；
+
+static 静态函数：
+
+表示这个函数只会被当前文件使用，不可能会被除本文件外的文件进行链接！
+
+这样此静态函数即使调用了一个未在本文件实现的函数，进行了声明，但未在其他函数实现的函数时，链接也不会报错，但是如果不是静态函数，链接时会报错，因为并没有明确告诉链接器其他文件不存在使用这个函数的清空；如下：
+
+```c++
+const char* Log(const char* message);
+
+int mul()
+{
+	Log("Multiply");
+	return	1;
+}
+int main() 
+{
+	//mul();
+}
+```
+
+编译不会报错，只会在链接时报错；
+
+Mul.obj : error LNK2019: 无法解析的外部符号 "char const * __cdecl Log(char const *)" (?Log@@YAPBDPBD@Z)
+
+```c++
+const char* Log(const char* message);
+
+static int mul()
+{
+	Log("Multiply");
+	return	1;
+}
+int main() 
+{
+	//mul();
+}
+```
+
+编译不会报错，链接也不会报错；
+
+Linker常见报错：
+
+函数被重复实现（不是在一个文件里面实现两次，这种编译就会报错，而是头文件有函数实现，并且头文件被不小心include两次）
+
+只要头文件里面只有声明，就会避免这个错误。
 
