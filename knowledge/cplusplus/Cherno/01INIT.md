@@ -584,3 +584,80 @@ Linker常见报错：
 
 只要头文件里面只有声明，就会避免这个错误。
 
+# 11 How to DEBUG C++ in VS
+
+DEBUG：暂停程序，看内存；
+
+一个正在运行的程序的内存几乎就是它的全部；
+
+step into 进入到函数；F11
+
+step over 到当前函数的下一行代码；F10
+
+step out 跳出当前函数；shift+F11
+
+调试过程中三个重要的窗口：
+
+Autos 展示重要的变量
+
+Locals 展示局部变量
+
+Watch 实时监控变量
+
+调处内存视图：DEBUG->Windows->内存->内存1
+
+调式模式：编译器会让程序做一些让我们便于调试的事情；
+
+举例：
+
+内存是cc的，意味着他是一个未初始化的堆栈内存；（cc = 204）因为编译器知道我们要创建一个变量，当还未初始化的时候，就会用cc来填充内存；
+
+# 12 CONDITIONS and BRANCHES in C++
+
+使用disassemblely处理代码
+
+调式过程中，右击代码->转到反汇编：(一定不要编译的时候进行优化，否则一些信息就会丢失)
+
+```c++
+	bool compRet = c == 2;
+	if (compRet)
+	{
+		c = 3;
+	}
+```
+
+反汇编如下：
+
+```c++
+bool compRet = c == 2;
+00D743AF  cmp         dword ptr [c],2  
+00D743B3  jne         __$EncStackInitStart+55h (0D743C1h)  
+00D743B5  mov         dword ptr [ebp-104h],1  
+00D743BF  jmp         __$EncStackInitStart+5Fh (0D743CBh)  
+00D743C1  mov         dword ptr [ebp-104h],0  
+00D743CB  mov         al,byte ptr [ebp-104h]  
+00D743D1  mov         byte ptr [compRet],al  
+	if (compRet)
+00D743D4  movzx       eax,byte ptr [compRet]  
+00D743D8  test        eax,eax  
+00D743DA  je          __$EncStackInitStart+77h (0D743E3h)  
+	{
+		c = 3;
+00D743DC  mov         dword ptr [c],3  
+	}
+```
+
+jne:jump not equal ;
+
+# 13 BEST VS Step for C++ Project !
+
+配置项目中生成文件的路径：
+
+项目右击属性：选择常规；
+
+将配置和平台选择成对所有的均生效；
+
+输出目录：$(SolutionDir)bin\$(Platform)\$(Configuration)\
+
+中间目录：$(SolutionDir)bin\intermediates\$(Platform)\$(Configuration)\
+
