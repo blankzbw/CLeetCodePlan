@@ -111,28 +111,73 @@ https://git-scm.com/book/zh/v2
 ## 6. git场景
 
 > 1. 修改老的commit点的提交信息
+>
 >    1. git rebase -i 父commit点  交互变基
 >    2. 将想变基的commit点修改为reword，wq！
 >    3. 变更提交信息
+>
 > 2. 将连续多个commit点压缩成一个
+>
 >    1. git rebase -i 父commit点  交互变基
 >    2. 将想变基的commit点修改为squash，wq！
 >    3. 变更提交信息
+>
 > 3. 将间隔多个commit点压缩成一个
+>
 >    1. git rebase -i 父commit点  交互变基
 >    2. 调整commit点顺序
 >    3. 将想变基的commit点修改为squash，wq！
 >    4. 变更提交信息
 >    5. 不建议使用，毕竟很多commit点有耦合关系，冲突较多
+>
 > 4. 取消最近几次的提交
+>
 >    1. git reset --hard commit点   （危险）将HEAD指向commit点，同时将暂存区和工作区也恢复到commit点内容；这样真的会丢失commit点，所以使用时一定要注意
+>
 > 5. 临时开发紧急任务（将工作区和暂存区现场保存）
+>
 >    1. git stash 将工作区和暂存区现场保存至栈中
 >    2. git stash list 查看栈中的信息
 >    3. git status 查看工作区是干净的
 >    4. 开发紧急任务
 >    5. git stash apply 读出栈中内容恢复至工作区和暂存区
 >    6. git stash pop 弹出栈中内容恢复至工作区和暂存区
+>
+> 6. 多人协作场景
+>
+>    1. 两个人修改不同文件先后提交,git可以自动合并
+>       1. 第一个人git add + git commit +git push
+>       2. 第二个人git add + git commit +git push（报错nofast）+git pull（git fetch+git merge)
+>    2. 两个人修改相同文件不同位置，git可以自动合并
+>       1. 第一个人git add + git commit +git push
+>       2. 第二个人git add + git commit +git push（报错nofast）+git pull（git fetch+git merge)
+>    3. 两个人修改相同文件相同位置，git不可以自动合并
+>       1. 第一个人git add + git commit +git push
+>       2. 第二个人git add + git commit +git push（报错nofast）+git pull（git fetch+git merge)（报错冲突）+解决冲突+git commit + git push
+>    4. 一个人修改文件名，一个人基于之前的名称修改内容，git可以自动合并
+>       1. 第一个人git add + git commit +git push
+>       2. 第二个人git add + git commit +git push（报错nofast）+git pull（git fetch+git merge)
+>    5. 两个人同时修改文件名，git不可以自动合并
+>       1. 第一个人git add + git commit +git push
+>       2. 第二个人git add + git commit +git push（报错no fastforward）+git pull（git fetch+git merge)（报错冲突）+解决冲突+git rm +git add + git commit + git push
+>
+> 7. 危险性极大的命令
+>
+>    1. git reset --hard commit点,然后git push -f  会导致远端的commit点丢失掉；
+>
+>    2. 公共分支禁止进行变基操作，这样会修改掉历史信息；如果A变基了，B进行push时就容易报错,导致解决起来非常的麻烦
+>
+>       ![rejected]   test_rebase_inter -> test_rebase_inter (non-fast-forward)
+>
+>       error: faild to push some  refs to "git@github.com:XXX/xx.git"
+>
+>       hint : Updates were rejectes because the tip of your current branch is behind
+>
+>       hint : its remote counterpart.Integrate the remote changes(e.g.
+>
+>       hint : 'hit pull ...') before pushing again.
+>
+>       hint : See the 'Note about fast-forward' in 'git push --help' for details.
 
 ## 7. 仓库备份
 
@@ -147,9 +192,158 @@ https://git-scm.com/book/zh/v2
 > | ssh协议       | user@git-server.com:path/to/repo.git         | ⼯作中最常⽤的智能协议   |
 
 > 2. 哑协议与智能协议
+>
 >    1. 直观区别：哑协议传输进度不可见；智能协议传输可见；
 >    2. 传输速度：智能协议比哑协议传输速度快（压缩打包）；
-> 3. 
+>
+> 3. 备份
+>
+>    1. 哑协议克隆不带工作区的裸仓库
+>
+>       $ git clone --bare  /d/git/CLeetCodePlan/.git ya.git
+>       Cloning into bare repository 'ya.git'...
+>       done.
+>
+>    2. 哑协议克隆整个仓库（包括工作区）
+>
+>       $ git clone  /d/git/CLeetCodePlan/.git ya
+>       Cloning into bare repository 'ya'...
+>       done.
+>
+>    3. 智能协议克隆不带工作区的裸仓库
+>
+>       $ git clone  --bare file:///d/git/CLeetCodePlan/.git zhineng.git
+>       Cloning into bare repository 'zhineng.git'...
+>       remote: Enumerating objects: 81, done.
+>       remote: Counting objects: 100% (81/81), done.
+>       remote: Compressing objects: 100% (65/65), done.
+>       remote: Total 81 (delta 23), reused 19 (delta 3), pack-reused 0
+>       Receiving objects: 100% (81/81), 177.99 KiB | 6.84 MiB/s, done.
+>       Resolving deltas: 100% (23/23), done.
+>
+>    4. 智能协议克隆整个仓库（包括工作区）
+>
+>       $ git clone  file:///d/git/CLeetCodePlan/.git zhineng
+>       Cloning into 'zhineng'...
+>       remote: Enumerating objects: 81, done.
+>       remote: Counting objects: 100% (81/81), done.
+>       remote: Compressing objects: 100% (65/65), done.
+>       Receiving objects:  58% remote: Total 81 (delta 23), reused 19 (delta 3), pack-reused 0
+>       Receiving objects: 100% (81/81), 177.99 KiB | 7.12 MiB/s, done.
+>       Resolving deltas: 100% (23/23), done.
+>
+> 4. 远端仓库
+>
+>    1. 增加远端仓库
+>
+>       $git remote add zhineng  file:///d/git/test/zhineng.git
+>
+>    2. 查看增加的仓库
+>
+>       $ git remote -v
+>       origin  git@github.com:blankzbw/CLeetCodePlan.git (fetch)
+>       origin  git@github.com:blankzbw/CLeetCodePlan.git (push)
+>       zhineng file:///d/git/test/zhineng.git (fetch)
+>       zhineng file:///d/git/test/zhineng.git (push)
+>
+>    3. 在本地仓库提交一个commit点
+>
+>       $ git commit -m "uodate git"
+>       [main 61f5ef0] uodate git
+>        1 file changed, 19 insertions(+)
+>
+>    4. 将commit点推送到远端
+>
+>       $ git push zhineng
+>       Enumerating objects: 9, done.
+>       Counting objects: 100% (9/9), done.
+>       Delta compression using up to 8 threads
+>       Compressing objects: 100% (5/5), done.
+>       Writing objects: 100% (5/5), 822 bytes | 822.00 KiB/s, done.
+>       Total 5 (delta 3), reused 0 (delta 0), pack-reused 0
+>       To file:///d/git/test/zhineng.git
+>          b6986d9..61f5ef0  main -> main
+>
+>    5. 查看远端仓库commit信息
+>
+>       $ git log
+>       commit 61f5ef0b1ed37ba351eaaf7556d68fea758d8a95 (HEAD -> main)
+>       Author: blankzbw <zhengbowen963@163.com>
+>       Date:   Fri Jul 16 00:26:36 2021 +0800
+>
+>       update git
+>
+>       由于创建的是裸仓库，所以只更新commit点，不会更新工作区文件
+>
+>    6. 一路验证.git里面存的内容
+>
+>    7. $ git cat-file -p 61f5ef0b1ed37ba351eaaf7556d68fea758d8a95
+>       tree 23da1fe2f115126103d33969ed63e555847e04dc
+>       parent b6986d9c3ae60edb864fb401bf93d11ae8acf53b
+>       author blankzbw <zhengbowen963@163.com> 1626366396 +0800
+>       committer blankzbw <zhengbowen963@163.com> 1626366396 +0800
+>
+>       uodate git
+>
+>       zbw@LAPTOP-6JBT8C4I MINGW64 /d/git/test/zhineng.git (BARE:main)
+>       $ git cat-file -p  23da1fe2f115126103d33969ed63e555847e04dc
+>       100644 blob c6127b38c1aa25968a88db3940604d41529e4cf5    .gitignore
+>       100644 blob 261eeb9e9f8b2b4b0d119366dda99c6fd7d35c64    LICENSE
+>       100644 blob eb485661d7acbbdc167426d869fc7dd61964f205    README.md
+>       040000 tree 1467a07cba0a8fa4612dc84702e990403cc09f53    knowledge
+>       040000 tree a0244e39aaafc8a38c4c705bc9352ffb308de293    leetcode
+>       040000 tree cd83f81f1bf934b5a70bfb638e5bad58f1bbd159    vscode_setting
+>
+>       zbw@LAPTOP-6JBT8C4I MINGW64 /d/git/test/zhineng.git (BARE:main)
+>       $ git cat-file -p  1467a07cba0a8fa4612dc84702e990403cc09f53
+>       100644 blob 9cb3de0033db6fb482a389859b9d0c10576a4528    README.md
+>       040000 tree aa839ef85c33867690ac46a2d66e4713b972f30f    cplusplus
+>       040000 tree db163afff9a49da223c7a2b24deebee495d900f7    git
+>
+>       zbw@LAPTOP-6JBT8C4I MINGW64 /d/git/test/zhineng.git (BARE:main)
+>       $ git cat-file -p   db163afff9a49da223c7a2b24deebee495d900f7
+>       100644 blob 05c6077d090d608fabd30baf42c6f2ac21580c36    git.md
+>       100644 blob 01148c407531e545007d65f2b446ee4a91e04bb3    git1.PNG
+>
+>       zbw@LAPTOP-6JBT8C4I MINGW64 /d/git/test/zhineng.git (BARE:main)
+>       $ git cat-file -p   05c6077d090d608fabd30baf42c6f2ac21580c36
+>
+>       git中文教程
+>
+>       https://git-scm.com/book/zh/v2
+>
+>       1. git配置命令
 
- 
+## 8. 远端仓库
 
+1. 合并分支 git merge
+2. 拉取远端分支 git fetch
+3. 拉取远端分支到本地并合并分支 git pull =  git fetch + git merge
+4. 合并两个没有关系的远端分支和本地分支git merge --allow-unrelated-histories github/master
+5. 推送到远端仓库 git push github/master
+
+## 9. 开发工作流
+
+> 1. 主干开发（google采用）
+>
+>    ![](D:\git\CLeetCodePlan\knowledge\git\主干开发.PNG)
+>
+> 2. git flow开发
+>
+>    ![](D:\git\CLeetCodePlan\knowledge\git\git_flow.PNG)
+>
+> 3. GitHub flow开发
+>
+>    ![](D:\git\CLeetCodePlan\knowledge\git\githubflow.PNG)
+>
+> 4. gitlab flow（带生产分支）
+>
+>    ![](D:\git\CLeetCodePlan\knowledge\git\gitlabfolw.PNG)
+>
+> 5. gitlab flow（带环境分支）
+>
+>    ![](D:\git\CLeetCodePlan\knowledge\git\gitlabflow1.PNG)
+>
+> 6. gitlab flow（带发布分支）
+>
+>    ![](D:\git\CLeetCodePlan\knowledge\git\gitlabflow2.PNG)
