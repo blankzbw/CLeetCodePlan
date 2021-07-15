@@ -104,7 +104,7 @@ https://git-scm.com/book/zh/v2
 >
 >    可以通过3中的命令查看
 >
->    ![](D:\git\CLeetCodePlan\knowledge\git\git1.PNG)
+>    ![](https://github.com/blankzbw/CLeetCodePlan/blob/main/knowledge/git/git1.PNG)
 >
 > 5. 
 
