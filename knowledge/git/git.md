@@ -326,24 +326,24 @@ https://git-scm.com/book/zh/v2
 
 > 1. 主干开发（google采用）
 >
->    ![](D:\git\CLeetCodePlan\knowledge\git\主干开发.PNG)
+>    ![](https://github.com/blankzbw/CLeetCodePlan/blob/main/knowledge/git/git2.PNG)
 >
 > 2. git flow开发
 >
->    ![](D:\git\CLeetCodePlan\knowledge\git\git_flow.PNG)
+>    ![](https://github.com/blankzbw/CLeetCodePlan/blob/main/knowledge/git/git_flow.PNG.PNG)
 >
 > 3. GitHub flow开发
 >
->    ![](D:\git\CLeetCodePlan\knowledge\git\githubflow.PNG)
+>    ![](https://github.com/blankzbw/CLeetCodePlan/blob/main/knowledge/git/githubflow.PNG)
 >
 > 4. gitlab flow（带生产分支）
 >
->    ![](D:\git\CLeetCodePlan\knowledge\git\gitlabfolw.PNG)
+>    ![](https://github.com/blankzbw/CLeetCodePlan/blob/main/knowledge/git/gitlabflow.PNG)
 >
 > 5. gitlab flow（带环境分支）
 >
->    ![](D:\git\CLeetCodePlan\knowledge\git\gitlabflow1.PNG)
+>    ![](https://github.com/blankzbw/CLeetCodePlan/blob/main/knowledge/git/gitlabflow1.PNG)
 >
 > 6. gitlab flow（带发布分支）
 >
->    ![](D:\git\CLeetCodePlan\knowledge\git\gitlabflow2.PNG)
+>    ![](https://github.com/blankzbw/CLeetCodePlan/blob/main/knowledge/git/gitlabflow2.PNG)
