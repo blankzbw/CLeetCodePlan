@@ -134,3 +134,22 @@ https://git-scm.com/book/zh/v2
 >    5. git stash apply 读出栈中内容恢复至工作区和暂存区
 >    6. git stash pop 弹出栈中内容恢复至工作区和暂存区
 
+## 7. 仓库备份
+
+> 1. 常用的传输协议
+>
+> | 常用协议      | 语法格式                                     | 说明                     |
+> | ------------- | -------------------------------------------- | ------------------------ |
+> | 本地协议（1） | /path/to/repo.git                            | 哑协议                   |
+> | 本地协议（2） | file:///path/to/repo.git                     | 智能协议                 |
+> | http协议      | http://git-server.com:port/path/to/repo.git  | 平时接触到的都是智能协议 |
+> | https协议     | https://git-server.com:port/path/to/repo.git | 平时接触到的都是智能协议 |
+> | ssh协议       | user@git-server.com:path/to/repo.git         | ⼯作中最常⽤的智能协议   |
+
+> 2. 哑协议与智能协议
+>    1. 直观区别：哑协议传输进度不可见；智能协议传输可见；
+>    2. 传输速度：智能协议比哑协议传输速度快（压缩打包）；
+> 3. 
+
+ 
+
